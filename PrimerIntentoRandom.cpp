@@ -100,14 +100,13 @@ void Colisionador::CalculeFuerzas(Cuerpo * Grano,double dt,int & value, double F
   for(i=0;i<Ntot;i++)
     Grano[i].BorreFuerza();                                                 // Borra fuerzas de todo lado
   //--- Añadir fuerza de gravedad ---
-  /*vector3D F0;
+vector3D F0;
   for(i=0;i<N;i++){                                                         // No pone fuerzas en paredes (?)
     F0x = -Grano[i].V.x();
-    if(a > 0){value*=-1;}
-    F0y = -Grano[i].V.y()-value*pow((Grano[i].R/Reff),3);
+    F0y = -Grano[i].V.y()+value*pow((Grano[i].R/Reff),3);
     F0.load(F0x,F0y,0);
     Grano[i].AdicioneFuerza(F0,0);                                          // Fuerza de gravedad (toca cambiar por fuerza periódica)
-  }*/
+  }
   //--- Calcular Fuerzas entre pares de planetas ---
   for(i=0;i<N;i++)                                                          // No calcula fuerzas en paredes (?)
     for(j=i+1;j<Ntot;j++)      
@@ -118,8 +117,8 @@ void Colisionador::CalculeFuerzas(Cuerpo * Grano,double dt,int & value, double F
    for (i=0; i<N; i++){
    		double Radio, masa, B;
 		Radio = Grano[i].R; masa = Grano[i].m;
-		B =  1/(Radio*masa);
-		FA.load(FAx*B, FAy*B,0);
+		B =  masa*Radio;
+		FA.load(5*dt*FAx*B, 5*dt*FAy*B,0);
 		Grano[i].AdicioneFuerza(FA,0);
    }
 }
@@ -149,7 +148,7 @@ void Colisionador::CalculeFuerzaEntre(Cuerpo & Grano1,Cuerpo & Grano2,
     
     //Calcula y Cargue las fuerzas
     F2=n*Fn+t*Ft; tau2=((n*(-R2))^F2); F1=F2*(-1); tau1=((n*R1)^F1);        // Carga las fuerzas
-    Grano2.AdicioneFuerza(F2,tau2*k);   Grano1.AdicioneFuerza(F1,tau1*k);
+    Grano2.AdicioneFuerza(F2/2,tau2*k);   Grano1.AdicioneFuerza(F1/2,tau1*k);
   }
 
   if(s_old>=0 && s<0) x_Cundall=0;                                          // Npi
