@@ -6,13 +6,13 @@
 using namespace std;
 
 //---- declarar constantes ---
-const double K=1.0e3;               // Constantes de simulación (Cambiar con viscosidad)
+const double K=1.0e4;               // Constantes de simulación (Cambiar con viscosidad)
 const double Lx=600, Ly=205;        // Tamaño de espacio de simulación (~medidas del paper)
 const int Nb=2, Ns=2, N=Nb+Ns;      // Nb = bolas grandes, Ns = bolas pequeñas, N = Total de coloides
 const double g=9.8, Gamma=160, Kcundall=200, mu=1.4;  /// Gravedad y otras cosas (***************Gamma, Kcundall, mu = ?????)
 const double Reff = 0.119;
 const double Delta = 20;
-const double SIG = 200;
+const double SIG = 1000;
 const double Cosa = 0.2;
 
 // Número de pepas en sierras
@@ -215,7 +215,7 @@ int main(void){
 
     
     int value{-1};
-    double Tmas{3};
+    double Tmas{2.2};
     
     for(t=0,tdibujo=tcuadro +1,tPaso = Tmas ; t<2*tmax; t+=dt,tdibujo+=dt,tPaso+=dt){
         if(tdibujo>tcuadro){
