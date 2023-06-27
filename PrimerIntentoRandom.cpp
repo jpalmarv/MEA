@@ -9,7 +9,7 @@ using namespace std;
 const double K=1.0e4;               // Constantes de simulación (Cambiar con viscosidad)
 const double Lx=600, Ly=205;        // Tamaño de espacio de simulación (~medidas del paper)
 const int Nb=2, Ns=2, N=Nb+Ns;      // Nb = bolas grandes, Ns = bolas pequeñas, N = Total de coloides
-const double g=9.8, Gamma=150, Kcundall=200, mu=1.4;  /// Gravedad y otras cosas (***************Gamma, Kcundall, mu = ?????)
+const double g=9.8, Gamma=-150, Kcundall=200, mu=1.4;  /// Gravedad y otras cosas (***************Gamma, Kcundall, mu = ?????)
 const double Reff = 0.119;
 const double Delta = 1;
 
@@ -100,13 +100,13 @@ void Colisionador::CalculeFuerzas(Cuerpo * Grano,double dt,int & value, double F
   for(i=0;i<Ntot;i++)
     Grano[i].BorreFuerza();                                                 // Borra fuerzas de todo lado
   //--- Añadir fuerza de gravedad ---
-vector3D F0;
+/*vector3D F0;
   for(i=0;i<N;i++){                                                         // No pone fuerzas en paredes (?)
     F0x = -Grano[i].V.x();
     F0y = -Grano[i].V.y()+value*pow((Grano[i].R/Reff),3);
     F0.load(F0x,F0y,0);
     Grano[i].AdicioneFuerza(F0,0);                                          // Fuerza de gravedad (toca cambiar por fuerza periódica)
-  }
+  }*/
   //--- Calcular Fuerzas entre pares de planetas ---
   for(i=0;i<N;i++)                                                          // No calcula fuerzas en paredes (?)
     for(j=i+1;j<Ntot;j++)      
@@ -118,7 +118,7 @@ vector3D F0;
    		double Radio, masa, B;
 		Radio = Grano[i].R; masa = Grano[i].m;
 		B =  masa*Radio;
-		FA.load(5*dt*FAx*B, 5*dt*FAy*B,0);
+		FA.load(20*dt*FAx*B, 20*dt*FAy*B,0);
 		Grano[i].AdicioneFuerza(FA,0);
    }
 }
@@ -234,16 +234,16 @@ int main(void){
         
         //--- Muevase por PEFRL ---
         for(i=0;i<N;i++)Molecula[i].Mueva_r(dt,epsilon);
-        Hertz.CalculeFuerzas(Molecula,dt,value,RAN64.gauss(0,20000),RAN64.gauss(0,20000),RAN64);
+        Hertz.CalculeFuerzas(Molecula,dt,value,RAN64.gauss(0,500),RAN64.gauss(0,500),RAN64);
         for(i=0;i<N;i++)Molecula[i].Mueva_V(dt,lambda2);
         for(i=0;i<N;i++)Molecula[i].Mueva_r(dt,chi);
-        Hertz.CalculeFuerzas(Molecula,dt,value,RAN64.gauss(0,2000),RAN64.gauss(0,20000),RAN64);
+        Hertz.CalculeFuerzas(Molecula,dt,value,RAN64.gauss(0,500),RAN64.gauss(0,500),RAN64);
         for(i=0;i<N;i++)Molecula[i].Mueva_V(dt,lambda);
         for(i=0;i<N;i++)Molecula[i].Mueva_r(dt,chiepsilon);
-        Hertz.CalculeFuerzas(Molecula,dt,value,RAN64.gauss(0,20000),RAN64.gauss(0,20000),RAN64);
+        Hertz.CalculeFuerzas(Molecula,dt,value,RAN64.gauss(0,500),RAN64.gauss(0,500),RAN64);
         for(i=0;i<N;i++)Molecula[i].Mueva_V(dt,lambda);
         for(i=0;i<N;i++)Molecula[i].Mueva_r(dt,chi);
-        Hertz.CalculeFuerzas(Molecula,dt,value,RAN64.gauss(0,20000),RAN64.gauss(0,20000),RAN64);
+        Hertz.CalculeFuerzas(Molecula,dt,value,RAN64.gauss(0,500),RAN64.gauss(0,500),RAN64);
         for(i=0;i<N;i++)Molecula[i].Mueva_V(dt,lambda2);
         for(i=0;i<N;i++)Molecula[i].Mueva_r(dt,epsilon); 
    
